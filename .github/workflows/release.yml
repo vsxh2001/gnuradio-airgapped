@@ -1,0 +1,39 @@
+name: Release Airgapped Deploy Archive
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build deploy archive
+        run: ./build.sh
+
+      - name: Verify artifact exists
+        run: |
+          [[ -f gnuradio-airgapped-deploy.tar.gz ]] || \
+            { echo "ERROR: gnuradio-airgapped-deploy.tar.gz not found after build"; exit 1; }
+
+      - name: Get short SHA
+        id: sha
+        run: echo "short=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "release-${{ steps.sha.outputs.short }}"
+          name: "GNU Radio Airgapped ${{ steps.sha.outputs.short }}"
+          body: |
+            Automated release for commit ${{ github.sha }}.
+
+            Download `gnuradio-airgapped-deploy.tar.gz` and follow the deploy instructions in [README.md](README.md).
+          files: gnuradio-airgapped-deploy.tar.gz
