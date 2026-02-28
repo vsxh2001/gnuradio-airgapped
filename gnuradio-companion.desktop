@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=GNU Radio Companion
+GenericName=SDR Toolkit
+Comment=GNU Radio Companion (Docker) — USRP B-series
+Exec=/opt/gnuradio-airgapped/run.sh
+Icon=/opt/gnuradio-airgapped/gnuradio-icon.png
+Terminal=false
+Categories=Development;HamRadio;Science;Education;
+Keywords=SDR;Radio;USRP;UHD;GNURadio;
+StartupWMClass=gnuradio-companion
